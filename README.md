@@ -1,11 +1,13 @@
 # Optimizely-EventAPI-SendBeacon
 
-Send events using the sendBeacon API. Utilizes Optimzely's event api. 
+Send events using a browser's sendBeacon API and Optimzely's event api. 
 
 Sends the following payload to Optimizely:
 * Account ID
 * Event Name as key
 * Event ID as entity ID
+* Sets Session_ID to AUTO in order to omit the decisions from the event payload.
+* Timestamp in milliseconds.
 
 Optimizely will attribute these events to an experiment as long as the event is sent > 30 minutes after the last network call sent by the Optimizely client JS.
 
