@@ -30,7 +30,7 @@ $(document).delegate('a','mousedown',function(){
 
 ## Reference
 
-Optimizely's Event API: https://developers.optimizely.com/x/events/api/
-SendBeacon API: https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon
-W3 sendBeacon specs: https://www.w3.org/TR/beacon/
-UUID: https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+Optimizely's Event API: https://developers.optimizely.com/x/events/api/  
+SendBeacon API: https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon  
+W3 sendBeacon specs: https://www.w3.org/TR/beacon/  
+UUID: https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript  
