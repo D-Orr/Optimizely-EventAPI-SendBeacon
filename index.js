@@ -24,7 +24,7 @@ var activated = function(){
             window.optly.beacon.eventIds[apiName] = id;
         }
     };
-    
+
     window.optly.beacon.getEventIds();
     //GUID generator
     //https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
@@ -74,15 +74,14 @@ var activated = function(){
 
     //Send event api using sendBeacon
     window.optly.beacon.sendEvent = function(eventName){
-        // if (eventId !== undefined){
-            //Check to see if the eventName has an event ID.
             console.log("Sending " + eventName + " to Optimizely");
-            var payloadData = JSON.stringify(window.optly.beacon.payloadBuilder(eventName));
-            return navigator.sendBeacon('https://logx.optimizely.com/v1/events', payloadData);
-        // }
-        // else if (eventId == undefined){
-        //     console.log("event ID is undefined for event name: " + eventNamee);
-        // }    
+            if (window.optly.beacon.getEventIds[eventName]){
+                var payloadData = JSON.stringify(window.optly.beacon.payloadBuilder(eventName));
+                return navigator.sendBeacon('https://logx.optimizely.com/v1/events', payloadData);    
+            }
+            else{
+                return console.log('Optimizely event ID not found. Not sending event.');
+            }
     };
     
 };
@@ -100,3 +99,11 @@ window["optimizely"].push({
   // Add the initialized function as a handler.
   handler: activated
 });
+
+
+//Usage: Pass the event API name
+// window.optly.beacon.sendEvent('myEventName');
+$(document).delegate('a','mousedown',function(){
+    window.optly.beacon.sendEvent('myEventName');
+});
+
