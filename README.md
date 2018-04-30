@@ -1,5 +1,11 @@
 # Optimizely-EventAPI-SendBeacon
 
+**Compatibility**
+Tested on Edge, Chrome, Safari Mobile and Firefox(Pre-Quantum). Does not work on Firefox Quantum.
+
+
+**Description**
+
 Send events using a browser's sendBeacon API and Optimzely's event api. 
 
 Sends the following payload to Optimizely:
@@ -15,6 +21,11 @@ Optimizely will attribute these events to an experiment as long as the event is 
 
 To solve the issue where some click goals on links that leads visitors to a new domain are dropped.
 
+The image below contains 3 events. The 1st one is sent using this API and the other 2 are sent using Optimizely's built in click tracking. 
+
+[Image of Chrome's network panel]
+(https://dorrvid.github.com/issue.jpg)
+
 ## Usage
 
 1. Copy index.js and paste it in project JS. You can remove lines 5 through 8 if you already implemented the preconnect tag.
@@ -27,6 +38,11 @@ $(document).delegate('a','mousedown',function(){
     window.optly.beacon.sendEvent('myEventName');
 });
 ```
+
+## Issues
+
+* Optimizely will automatically save an event in local storage if an event does not successfully get sent. This allows events to be sent at a later time as long as the visitor comes back to the site.
+* sendBeacon API does not work with Firefox Quantum.
 
 ## Reference
 
