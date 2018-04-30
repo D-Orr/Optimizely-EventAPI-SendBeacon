@@ -1,12 +1,30 @@
-window.optly = window.optly || [];
-window.optly.beacon = window.optly.beacon || [];
-
 //Insert dns prefetch for the Optimizely event endpoint
 var link = document.createElement('link');
 link.rel = 'preconnect';
 link.href = 'https://logx.optimizely.com/v1/events';
 document.head.appendChild(link);
 
+//Check if sendBeacon is supported
+try {
+    var isSendBeaconSupported = !!navigator.sendBeacon;
+    isSendBeaconSupported;
+    window["optimizely"] = window["optimizely"] || [];
+    window["optimizely"].push({
+        type: "addListener",
+        filter: {
+        type: "lifecycle",
+        name: "activated"
+    },
+    handler: activated
+});
+
+    }
+catch(e){
+    //console.log("sendBeacon is not supported");
+    }
+
+window.optly = window.optly || [];
+window.optly.beacon = window.optly.beacon || [];
 var activated = function(){
     //Store common variables
     window.optly.beacon.accountId = window.optimizely.get('data').accountId;
@@ -85,25 +103,4 @@ var activated = function(){
     };
     
 };
-
-
-
-//Calls the sendbeacon function when Optimizely's data is available. 
-window["optimizely"] = window["optimizely"] || [];
-window["optimizely"].push({
-  type: "addListener",
-  filter: {
-    type: "lifecycle",
-    name: "activated"
-  },
-  // Add the initialized function as a handler.
-  handler: activated
-});
-
-
-//Usage: Pass the event API name
-// window.optly.beacon.sendEvent('myEventName');
-$(document).delegate('a','mousedown',function(){
-    window.optly.beacon.sendEvent('myEventName');
-});
 
