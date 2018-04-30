@@ -7,31 +7,26 @@ link.rel = 'dns-prefetch';
 link.href = 'https://logx.optimizely.com/v1/events';
 document.head.appendChild(link);
 
-
 var activate = function(){
 
-    window.optly.sendBeacon.accountId = window.optimizely.get('data').accountId;
-    window.optly.sendBeacon.visitorId = window.optimizely.get('visitor').visitorId;
+    //Store common variables
+    sendBeacon = window.optly.sendBeacon;
+    sendBeacon.accountId = window.optimizely.get('data').accountId;
+    sendBeacon.visitorId = window.optimizely.get('visitor').visitorId;
    
     //Used to look an event name's ID
-
-    try{
+    sendBeacon.getEventIds = function(){
         var optlyEvents = optimizely.get('data').events;
         window.eventIds = {};
         for (i in optlyEvents){
             var apiName = optlyEvents[i].apiName;
             var id = optlyEvents[i].id;
-            window.eventIds[apiName] = id;
-            console.log(id);
+            sendBeacon.eventIds[apiName] = id;
         }
-        console.log('returning event ids');
-    }
-    catch(e){
-        console.log('error saving event IDs ' +e);
     }
 
     //GUID generator
-    window.optly.sendBeacon.guid = function(){
+    sendBeacon.guid = function(){
             function s4() {
             return Math.floor((1 + Math.random()) * 0x10000)
                 .toString(16)
@@ -41,18 +36,20 @@ var activate = function(){
     };
 
     //retreive variables
-    window.optly.sendBeacon.payloadVariables = function(e){
-        var eventName = e;
-        var eventId = window.eventIds[eventName];
-        console.log('payloadvariables function: ' + eventName + ' and id ' +eventId);
-        var currentTime = Date.now();
-        var newUUID = window.optly.sendBeacon.guid();
+    sendBeacon.payloadVariables = function(e){
+        console.log(e);
+
         return {eventName: eventName, eventId:eventId,currentTime:currentTime, newUUID:newUUID};
     };
 
-    window.optly.sendBeacon.eventBuilder = function(eventVars){
+    sendBeacon.eventBuilder = function(eventName){
+        var eventId = sendBeacon.eventIds[eventName];
+        var eventName = eventName;
+        console.log('payloadvariables function: ' + eventName + ' and id ' +eventId);
+        var currentTime = Date.now();
+        var newUUID = sendBeacon.guid();
         var eventPayload = {
-            "account_id": window.optly.sendBeacon.accountId,
+            "account_id": sendBeacon.accountId,
             "visitors": [
                 {
                     "snapshots": [
@@ -80,25 +77,12 @@ var activate = function(){
         return eventPayload;
     };
 
-
-
-    window.optly.sendBeacon.payloadBuilder = function(eventName){
-        // console.log('payload builder');
-        // console.log(window.optly.sendBeacon.payloadVariables(event));
-        // var payloadData = window.optly.sendBeacon.payloadVariables(event);
-        // return window.optly.sendBeacon.eventBuilder(payloadData);
-    };
-
-    //Builds the payload for the eventAPI
-
     //Send event api using sendBeacon
     window.optly.sendBeacon.sendEvent = function(eventName){
         // if (eventId !== undefined){
             //Check to see if the eventName has an event ID.
             console.log("Sending " + eventName + " to Optimizely");
-            console.log('payload builder');
-            var payloadVariables = window.optly.sendBeacon.payloadVariables(eventName);
-            var payloadData = JSON.stringify(window.optly.sendBeacon.payloadVariables(payloadVariables));
+            var payloadData = JSON.stringify(window.optly.sendBeacon.payloadVariables(eventName));
             return navigator.sendBeacon('https://logx.optimizely.com/v1/events', payloadData);
         // }
         // else if (eventId == undefined){
@@ -108,6 +92,8 @@ var activate = function(){
     
 };
 
+
+//Calls the sendbeacon function when Optimizely's data is available. 
 window["optimizely"] = window["optimizely"] || [];
 window["optimizely"].push({
   type: "addListener",
