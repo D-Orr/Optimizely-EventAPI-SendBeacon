@@ -3,7 +3,7 @@ window.optly.beacon = window.optly.beacon || [];
 
 //Insert dns prefetch for the Optimizely event endpoint
 var link = document.createElement('link');
-link.rel = 'dns-prefetch';
+link.rel = 'preconnect';
 link.href = 'https://logx.optimizely.com/v1/events';
 document.head.appendChild(link);
 
