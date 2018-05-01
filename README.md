@@ -24,7 +24,7 @@ To solve the issue where some click goals on links that leads visitors to a new 
 The image below contains 3 events. The 1st one is sent using this API and the other 2 are sent using Optimizely's built in click tracking. 
 
 [Image of Chrome's network panel]
-(https://dorrvid.github.com/issue.jpg)
+(https://github.com/dorrvid/Optimizely-EventAPI-SendBeacon/blob/master/issue.jpg?raw=true)
 
 ## Usage
 
