@@ -29,7 +29,7 @@ The image below contains 3 events. The 1st one is sent using this API and the ot
 ## Usage
 
 1. Copy index.js and paste it in project JS. You can remove lines 5 through 8 if you already implemented the preconnect tag.
-2. Send events using ```window.optly.beacon.sendEvent('myEventName');```
+2. Send events using ```window.optly.beacon.sendEvent('myEventName');``` 'myEventName' must be an custom event or eventName ofan existing event in your project.
 
 JQuery example: 
 
@@ -42,6 +42,7 @@ $(document).delegate('a','mousedown',function(){
 ## Issues
 
 * Failed network requests will be lost. Optimizely stores pending events in local storage if an event does not successfully get sent. This allows events to be sent at a later time as long as the visitor comes back to the site.
+* May not work with cross project metrics 
 
 ## Reference
 
