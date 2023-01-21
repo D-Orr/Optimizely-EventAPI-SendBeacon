@@ -12,8 +12,8 @@ Sends the following payload to Optimizely:
 * Account ID
 * Event Name as key
 * Event ID as entity ID
-* Sets Session_ID to AUTO in order to omit the decisions from the event payload.
-* Timestamp in milliseconds.
+* Sets Session_ID to AUTO
+* Timestamp in milliseconds
 
 Optimizely will attribute these events to an experiment as long as the event is sent > 30 minutes after the last network call sent by the Optimizely client JS.
 
@@ -31,7 +31,7 @@ The image below contains 3 events. The 1st one is sent using this API and the ot
 1. Copy index.js and paste it in project JS. You can remove lines 5 through 8 if you already implemented the preconnect tag.
 2. Send events using ```window.optly.beacon.sendEvent('myEventName');```
 
-For example: 
+JQuery example: 
 
 ```
 $(document).delegate('a','mousedown',function(){
@@ -41,8 +41,7 @@ $(document).delegate('a','mousedown',function(){
 
 ## Issues
 
-* Optimizely will automatically save an event in local storage if an event does not successfully get sent. This allows events to be sent at a later time as long as the visitor comes back to the site.
-* sendBeacon API does not work with Firefox Quantum.
+* Failed network requests will be lost. Optimizely stores pending events in local storage if an event does not successfully get sent. This allows events to be sent at a later time as long as the visitor comes back to the site.
 
 ## Reference
 
